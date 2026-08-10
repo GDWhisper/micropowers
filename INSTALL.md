@@ -18,10 +18,10 @@ done
 `npx skills` 方式（推荐，一键安装整套）：
 
 ```bash
-npx skills add GDWhisper/micropowers -s '*' -y
+npx skills add GDWhisper/micropowers -s '*'
 ```
 
-> `-s '*'` 一次安装全部 5 个 skill（micropowers / micropowers-brainstorm / micropowers-plan / micropowers-execute / micropowers-finish），跳过交互勾选。指定 agent 用 `-a codebuddy`，装到全局加 `-g`。
+> `-s '*'` 一次安装全部 5 个 skill（micropowers / micropowers-brainstorm / micropowers-plan / micropowers-execute / micropowers-finish），跳过 skill 勾选；**安装到哪个 agent 保留交互选择**（或 `-a <agent>` 预设）。装到全局加 `-g`。
 
 If you fetched this file from a URL (not a local clone), clone the repo first:
 

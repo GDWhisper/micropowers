@@ -17,7 +17,8 @@ micropowers/
 │   └── dev/                     # dev 分支工作目录（当前）
 ├── .gitignore
 ├── INSTALL.md
-└── README.md
+├── README.md                     # 英文版（默认）
+└── README_zh.md                  # 简体中文版
 ```
 
 ## 分支策略

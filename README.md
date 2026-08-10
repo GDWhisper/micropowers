@@ -1,94 +1,92 @@
 # Micropowers
 
-轻量、不碍手碍脚的开发工作流。保留「先对齐、再动手」的纪律，砍掉 ceremony，给模型智力主导权但画清边界。
+> **English** | [简体中文](README_zh.md)
 
-## 定位
+A lightweight, no-friction development workflow. Keeps the discipline of "align first, code later" while cutting the ceremony — giving the model intellectual initiative but drawing clear boundaries.
+
+## Positioning
 
 | | Superpowers | Micropowers |
 |---|---|---|
-| 为谁设计 | 陌生 subagent + 复杂跨模块变更 | 日常需求 + 一个开发者 + 一个 agent |
-| 对模型的态度 | 防模型（HARD-GATE、红旗表） | 信模型（智力合伙人） |
-| 质量来源 | 下游审查（两人审） | 上游精度（精确 plan）+ 模型判断力 |
-| 流程刚性 | 不可跳过 | 默认硬边界，用户可覆盖 |
+| Designed for | Unfamiliar subagents + complex cross-module changes | Everyday requests + one developer + one agent |
+| Attitude toward the model | Guard against the model (HARD-GATE, red flags) | Trust the model (intellectual partner) |
+| Source of quality | Downstream review (two-person review) | Upstream precision (precise plan) + model judgment |
+| Process rigidity | Never skippable | Hard boundaries by default, user can override |
 
-不是 Superpowers 的简化版。哲学继承，代码独立。不兼容、不依赖、不互操作。
+Not a simplified Superpowers. Philosophy inherited, code independent. No compatibility, no dependency, no interop.
 
-## 流程
+## Flow
 
 ```
-用户 /micropowers → 入口路由 + 风格选择
-                → micropowers-brainstorm（Socratic 对齐）
-                → micropowers-plan（精确规格 + 验收清单）
-                → micropowers-execute（并行 subagent + TDD 纪律）
-                → micropowers-finish（收尾）
+User /micropowers → entry routing + style selection
+                 → micropowers-brainstorm (Socratic alignment)
+                 → micropowers-plan (precise spec + acceptance checklist)
+                 → micropowers-execute (parallel subagents + TDD discipline)
+                 → micropowers-finish (wrap-up)
 ```
 
-四个阶段不可跳过——用户打 `/micropowers` 就是签了这份契约；唯一例外是续档：saved plan 直接从执行阶段恢复。极简任务的设计呈现可压缩到一句话，但流程不可跳过。
+The four phases cannot be skipped — typing `/micropowers` signs that contract; the only exception is resuming: a saved plan resumes directly into the execution phase. The design presentation for a trivial task can be compressed to one sentence, but the flow itself is not skippable.
 
-## 四种协作风格
+## Four Collaboration Styles
 
-入口选择一种，全程贯彻。过程中随时可换。
+Pick one at the entry; it applies throughout. Switch at any time.
 
-| 风格 | 一句话 | 对齐阶段 | Plan 出稿 | 执行阶段 |
+| Style | In one line | Alignment phase | Plan output | Execution phase |
 |---|---|---|---|---|
-| **快速** | 要结果不要过程 | ~3问，直给推荐 | 给结论 | 只报成败 |
-| **标准**（默认） | 平衡 | ~8问，多选优先 | Task 摘要 | 每 task 一行 |
-| **可解释型** | 想理解思路 | 附取舍逻辑 | +设计理由 | +根因分析 |
-| **可审计型** | 决策留痕 | 追问到底 + 决策编号 | +决策链接 | 逐条 Verify |
+| **Fast** | Results over process | ~3 questions, give recommendation | Give the conclusion | Report pass/fail only |
+| **Standard** (default) | Balanced | ~8 questions, multiple-choice preferred | Task summary | One line per task |
+| **Explainable** | Wants to understand the thinking | Attach trade-off logic | + design rationale | + root-cause analysis |
+| **Auditable** | Every decision leaves a trace | Drill down + decision IDs | + decision links | Verify each item |
 
-风格文件独立（`skills/micropowers/micropowers-styles/`），不污染核心流程 skill。入口只按需读取所选风格，不一次性加载全部。Plan 内部执行规格四种风格完全相同，风格只影响出稿后给用户呈现什么。
+Style files live separately (`skills/micropowers/micropowers-styles/`) so they don't pollute the core workflow skills. The entry loads only the selected style on demand — never all four at once. The plan's internal execution spec is identical across all four styles; the style only affects what the user sees after the plan is produced.
 
-## 模型权限
+## Model Authority
 
-| | 纯技术决策 | 结构/安全风险 |
+| | Pure technical decisions | Structural / security risks |
 |---|---|---|
-| **权限** | 自主决定 | 必须站出来，附推荐方案 |
-| **条件** | 与用户需求不冲突 | 破坏/臃肿/危险，或有公认行业最佳解法 |
+| **Authority** | Decide autonomously | Must speak up, with a recommended option |
+| **Condition** | Does not conflict with the user's request | Destructive / bloated / dangerous, or a well-known industry best practice exists |
 
-**用户定义 what 和边界，模型负责 how 并守门。** 步骤内模型有智力主导权（提问、方案设计、任务拆分），但不能改变用户意图。
+**The user defines the what and the boundaries; the model owns the how and keeps the gate.** Within a step, the model has intellectual initiative (asking questions, designing solutions, splitting tasks), but cannot change the user's intent.
 
-## 人类局限适配
+## Human Limitations
 
-- **认知带宽有限** — 一次一个问题，plan 展示不灌满屏
-- **知识储备有限** — 不拷问用户技术细节，自己去项目里读
-- **表达不稳定** — 从粗糙描述推断意图，确认关键决策
-- **决策疲劳** — 分叉点给强推荐，不灌选项，不硬凑第三选项
+- **Limited cognitive bandwidth** — one question at a time, don't flood the screen with the plan
+- **Limited knowledge** — don't grill the user on technical details, read the project yourself
+- **Unstable expression** — infer intent from rough descriptions, confirm key decisions
+- **Decision fatigue** — give a strong recommendation at forks, don't flood with options, don't force a third option
 
-## 安装
+## Installation
 
-**推荐：`npx skills` 一键安装整套（5 个 skill 是一个整体，建议全部安装）**
+**Recommended: `npx skills` — install the whole set with one command (the 5 skills are one unit; install all of them)**
 
 ```bash
-npx skills add GDWhisper/micropowers -s '*' -y
+npx skills add GDWhisper/micropowers -s '*'
 ```
 
-> `-s '*'` 表示一次安装全部 5 个 skill（micropowers / micropowers-brainstorm / micropowers-plan / micropowers-execute / micropowers-finish）。不加 `-s` 会进入交互勾选界面，需要逐个空格选择。
-> 默认装到当前项目，加 `-g` 装到全局；指定 agent 用 `-a codebuddy`（支持的 agent 见 `npx skills add --help`）。
+> `-s '*'` skips the per-skill checklist and installs all 5 skills at once (micropowers / micropowers-brainstorm / micropowers-plan / micropowers-execute / micropowers-finish). Without `-s`, you'll get an interactive checklist where you select skills one by one with the spacebar.
+> **Which agent to install into is left to the interactive prompt** (`-a <agent>` can preset it; supported agents are listed in `npx skills add --help`). Installs into the current project by default; add `-g` for a global (user-level) install.
 
-**告诉你的 agent：**
+**Tell your agent:**
 
 > Fetch and follow instructions from https://raw.githubusercontent.com/GDWhisper/micropowers/refs/heads/main/INSTALL.md
 
-或手动：
+Or manually:
 
 ```bash
 cp -r micropowers/skills/* ~/.agents/skills/
 ```
 
-Pi 包安装：
+Pi package:
 
 ```bash
 pi install git:github.com/GDWhisper/micropowers
 ```
 
-## 与 Superpowers 的关系
+## Relationship to Superpowers
 
-两个项目可以同时安装，互不影响。
+Both projects can be installed side by side without affecting each other.
 
-## 更多
-
-理念和设计决策见 [.dev_docs/design.md](.dev_docs/design.md)。
-
-## 许可证
+## License
 
 Apache License 2.0
