@@ -33,8 +33,8 @@ Pick one at the entry; it applies throughout. Switch at any time.
 
 | Style | In one line | Alignment phase | Plan output | Execution phase |
 |---|---|---|---|---|
-| **Fast** | Results over process | ~3 questions, give recommendation | Give the conclusion | Report pass/fail only |
-| **Standard** (default) | Balanced | ~8 questions, multiple-choice preferred | Task summary | One line per task |
+| **Fast** | Results over process | at most ~3 questions, give recommendation | Give the conclusion | Report pass/fail only |
+| **Standard** (default) | Balanced | at most ~8 questions, multiple-choice preferred | Task summary | One line per task |
 | **Explainable** | Wants to understand the thinking | Attach trade-off logic | + design rationale | + root-cause analysis |
 | **Auditable** | Every decision leaves a trace | Drill down + decision IDs | + decision links | Verify each item |
 
