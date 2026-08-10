@@ -80,8 +80,11 @@ cp -r micropowers/skills/* ~/.agents/skills/
 Pi package:
 
 ```bash
-pi install git:github.com/GDWhisper/micropowers
+pi install npm:micropowers
 ```
+
+> Or pin a git ref instead: `pi install git:github.com/GDWhisper/micropowers@v0.1.0`. Add `-l` to write to the current project's `.pi/settings.json` rather than your user settings.
+> **Pick one install method, not both.** Pi resolves skill-name collisions first-come-first-served, and its auto-discovered directories win over packages — so leftover copies in `~/.agents/skills/micropowers*` or `~/.pi/agent/skills/micropowers*` (e.g. from `npx skills`) silently shadow the package's skills. Delete those copies before switching to the pi package.
 
 ## Relationship to Superpowers
 

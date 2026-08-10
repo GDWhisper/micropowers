@@ -80,8 +80,11 @@ cp -r micropowers/skills/* ~/.agents/skills/
 Pi 包安装：
 
 ```bash
-pi install git:github.com/GDWhisper/micropowers
+pi install npm:micropowers
 ```
+
+> 也可以钉住 git tag：`pi install git:github.com/GDWhisper/micropowers@v0.1.0`。加 `-l` 写入当前项目的 `.pi/settings.json`，默认写入用户级 settings。
+> **两种安装方式只能选一个。** pi 里同名 skill 先到先得，且自动发现目录优先于包 —— 所以 `~/.agents/skills/micropowers*` 或 `~/.pi/agent/skills/micropowers*` 下的残留副本（例如 `npx skills` 装的）会静默屏蔽包里的 skill。切换到 pi 包之前先把这些副本删掉。
 
 ## 与 Superpowers 的关系
 

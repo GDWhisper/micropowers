@@ -2,5 +2,39 @@
   "name": "micropowers",
   "version": "0.1.0",
   "description": "轻量、不碍手碍脚的开发工作流。保留「先对齐、再动手」的纪律，砍掉 ceremony，给模型智力主导权但画清边界。",
-  "license": "Apache-2.0"
+  "keywords": [
+    "pi-package",
+    "pi",
+    "skills",
+    "agent-workflow",
+    "micropowers",
+    "brainstorming"
+  ],
+  "license": "Apache-2.0",
+  "author": "GDWhisper",
+  "homepage": "https://github.com/GDWhisper/micropowers",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GDWhisper/micropowers.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GDWhisper/micropowers/issues"
+  },
+  "files": [
+    "skills/",
+    "hooks/",
+    "examples/",
+    "agents.md",
+    "INSTALL.md",
+    "README_zh.md"
+  ],
+  "pi": {
+    "skills": [
+      "./skills"
+    ]
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
