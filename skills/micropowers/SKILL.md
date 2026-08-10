@@ -86,7 +86,8 @@ The prompt MUST be exactly this (or its Chinese equivalent — match the user's 
 - The prompt above is the ONLY content of this message. Do NOT add framing, explanation, or other content.
 - Default to 2 (standard) if the user says "随便" / "都行" / "你定" / "默认" or doesn't answer.
 - If the user says "先开始" / "直接来" / "继续", default to standard.
-- After the user selects, immediately load ONLY the style file for the chosen `<name>` — the one file from the mapping below, e.g. `micropowers-styles/standard.md`. Style files live in this skill's `micropowers-styles/` subdirectory (some installs keep them in a sibling `micropowers-styles/` under the skills root). Locate it via Glob (e.g. `**/micropowers-styles/<name>.md`; typically `~/.agents/skills/micropowers/micropowers-styles/<name>.md` or `~/.codebuddy/skills/micropowers/micropowers-styles/<name>.md`), read it, and keep it in context as the active style.
+- After the user selects, immediately load ONLY the style file for the chosen `<name>`: `micropowers-styles/<name>.md`, resolved **relative to this skill file's own directory** (the SKILL.md location shown in your skill list). Read it and keep it in context as the active style.
+- Fallback only if that path does not exist: locate it via Glob `**/micropowers-styles/<name>.md` — some installs keep the style files in a sibling `micropowers-styles/` directory under the skills root instead of inside this skill.
 - Read ONLY the selected `<name>.md`. Do NOT read or load the other three style files — they stay dormant until the user switches styles (say 「切风格名」).
 - If the style file cannot be located, announce that, default to standard, and continue — do not stall the routing.
 - Announce the style in ONE line: "风格：<name> — 开始 brainstorm"
