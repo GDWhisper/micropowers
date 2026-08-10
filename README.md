@@ -56,6 +56,15 @@
 
 ## 安装
 
+**推荐：`npx skills` 一键安装整套（5 个 skill 是一个整体，建议全部安装）**
+
+```bash
+npx skills add GDWhisper/micropowers -s '*' -y
+```
+
+> `-s '*'` 表示一次安装全部 5 个 skill（micropowers / micropowers-brainstorm / micropowers-plan / micropowers-execute / micropowers-finish）。不加 `-s` 会进入交互勾选界面，需要逐个空格选择。
+> 默认装到当前项目，加 `-g` 装到全局；指定 agent 用 `-a codebuddy`（支持的 agent 见 `npx skills add --help`）。
+
 **告诉你的 agent：**
 
 > Fetch and follow instructions from https://raw.githubusercontent.com/GDWhisper/micropowers/refs/heads/main/INSTALL.md
