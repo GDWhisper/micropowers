@@ -8,7 +8,7 @@
 | npm | 已发布 [`micropowers`](https://www.npmjs.com/package/micropowers)@0.1.0 |
 | git tag | `v0.1.0`（= `main` 的 `5a18558`） |
 | pi 生态 | 正式 pi package —— `package.json` 里有 `pi.skills` manifest + `pi-package` keyword |
-| 分支 | 只有 `main` 在用，且已推送远端；`dev` / `test` 是遗留分支（见下） |
+| 分支 | 只有 `main`（已推送远端）；早期的 `dev` / `test` 遗留分支已删除 |
 
 ### 分发形态
 
@@ -54,11 +54,11 @@ micropowers/
 
 ## 分支现状
 
-**实际情况：单分支开发，直接在 `main` 上提交并推送。**
+**单分支开发：直接在 `main` 上提交并推送，远端也只有 `main`。**
 
-`dev` / `test` 两个本地分支是早期遗留，与 `main` **没有共同祖先**（`git merge-base main dev` 为空 —— `main` 是后来重新 init 的压缩历史），内容也全面落后于 `main`（缺 LICENSE、README_zh、pi 打包改动）。它们没有推送到远端，`.worktrees/` 已空。
+早期的 `dev` / `test` 分支已于 2026-08-11 删除：两者同为 `5a352b4`，与 `main` **没有共同祖先**（`main` 是后来重新 init 的压缩历史），内容全面落后于 `main`，也从未推送远端 —— merge 它们只会得到一次 unrelated-histories 灾难。删除前已备份为 git bundle：`/tmp/micropowers-dev-branch-backup.bundle`（如需找回：`git bundle unbundle <该文件>`，或 `git branch dev 5a352b4` 在 gc 之前直接恢复）。
 
-因此：**不要尝试 `git merge dev`**，会是一次 unrelated-histories 的灾难。这两个分支要么删除（`git branch -D dev test`），要么明确留作历史归档 —— 待决定。
+`.worktrees/` 目录已空，早期那套 `cd .worktrees/dev/` 的 worktree 开发流程不再适用。
 
 ## 发布流程
 
