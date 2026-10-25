@@ -1,3 +1,7 @@
 .worktrees/
 worktrees/
 .dev_docs/
+
+# npm pack / 分发包产物
+*.tgz
+micropowers-skill-*.tar.gz
