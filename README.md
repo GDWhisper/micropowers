@@ -19,13 +19,15 @@ Not a simplified Superpowers. Philosophy inherited, code independent. No compati
 
 ```
 User /micropowers → entry routing + style selection
-                 → micropowers-brainstorm (Socratic alignment)
-                 → micropowers-plan (precise spec + acceptance checklist)
-                 → micropowers-execute (parallel subagents + TDD discipline)
-                 → micropowers-finish (wrap-up)
+                 → Phase 1 Brainstorm (Socratic alignment)
+                 → Phase 2 Plan (precise spec + acceptance checklist)
+                 → Phase 3 Execute (parallel subagents + TDD discipline)
+                 → Phase 4 Finish (wrap-up)
 ```
 
 The four phases cannot be skipped — typing `/micropowers` signs that contract; the only exception is resuming: a saved plan resumes directly into the execution phase. The design presentation for a trivial task can be compressed to one sentence, but the flow itself is not skippable.
+
+**One entry point.** The four phases are plain files under `skills/micropowers/phases/`, not separate skills — the user sees a single `/micropowers`, and the AI's skill index holds a single entry, so nothing but the entry competes for attention.
 
 ## Four Collaboration Styles
 
@@ -38,7 +40,7 @@ Pick one at the entry; it applies throughout. Switch at any time.
 | **Explainable** | Wants to understand the thinking | Attach trade-off logic | + design rationale | + root-cause analysis |
 | **Auditable** | Every decision leaves a trace | Drill down + decision IDs | + decision links | Verify each item |
 
-Style files live separately (`skills/micropowers/micropowers-styles/`) so they don't pollute the core workflow skills. The entry loads only the selected style on demand — never all four at once. The plan's internal execution spec is identical across all four styles; the style only affects what the user sees after the plan is produced.
+Style files live separately (`skills/micropowers/styles/`) so they don't pollute the core workflow. The entry loads only the selected style on demand — never all four at once. The plan's internal execution spec is identical across all four styles; the style only affects what the user sees after the plan is produced.
 
 ## Model Authority
 
@@ -58,13 +60,13 @@ Style files live separately (`skills/micropowers/micropowers-styles/`) so they d
 
 ## Installation
 
-**Recommended: `npx skills` — install the whole set with one command (the 5 skills are one unit; install all of them)**
+**Recommended: `npx skills` — install with one command**
 
 ```bash
 npx skills add GDWhisper/micropowers -s '*'
 ```
 
-> `-s '*'` skips the per-skill checklist and installs all 5 skills at once (micropowers / micropowers-brainstorm / micropowers-plan / micropowers-execute / micropowers-finish). Without `-s`, you'll get an interactive checklist where you select skills one by one with the spacebar.
+> `-s '*'` skips the per-skill checklist and installs everything (now a single `micropowers` skill). Without `-s`, you'll get an interactive checklist.
 > **Which agent to install into is left to the interactive prompt** (`-a <agent>` can preset it; supported agents are listed in `npx skills add --help`). Installs into the current project by default; add `-g` for a global (user-level) install.
 
 **Tell your agent:**
@@ -74,8 +76,10 @@ npx skills add GDWhisper/micropowers -s '*'
 Or manually:
 
 ```bash
-cp -r micropowers/skills/* ~/.agents/skills/
+cp -r micropowers/skills/micropowers ~/.agents/skills/
 ```
+
+> **Upgrading from an older version**: delete the old sibling copies (`micropowers-brainstorm` / `micropowers-plan` / `micropowers-execute` / `micropowers-finish`) first — otherwise they keep loading as standalone skills. See [INSTALL.md](INSTALL.md).
 
 Pi package:
 

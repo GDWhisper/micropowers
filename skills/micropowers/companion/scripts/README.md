@@ -1,6 +1,6 @@
 # 视觉伴侣（Visual Companion）服务器
 
-这是 micropowers `micropowers-brainstorm` skill 的**可选**视觉伴侣组件。它提供一个本地
+这是 micropowers **Brainstorm 阶段**（`phases/brainstorm.md`）的**可选**视觉伴侣组件。它提供一个本地
 HTTP + WebSocket 服务器，把 AI 在 brainstorm 阶段生成的 HTML mockup 实时推送到用户的浏览器，
 并支持用户通过点击选项把选择事件回传给 AI。
 
@@ -14,17 +14,17 @@ HTTP + WebSocket 服务器，把 AI 在 brainstorm 阶段生成的 HTML mockup �
   捕获 `data-choice` 点击并回传为 `events`。
 - `frame-template.html` 是统一的页面框架模板（顶栏品牌 + 连接状态 + 内容区）。
 
-## 如何被 SKILL 调用
+## 如何被调用
 
-在 `micropowers-brainstorm` 的 SKILL.md 流程里，仅在用户同意使用视觉伴侣时，由 skill 执行
-`start-server.sh`：
+在 Brainstorm 阶段的流程里，仅在用户同意使用视觉伴侣时，由 agent 执行
+`start-server.sh`（脚本路径相对 micropowers skill 目录解析，即 `<skill-dir>/companion/scripts/`）：
 
 ```bash
 # 临时会话（文件落在 /tmp，停止后清理）：
-bash skills/micropowers-brainstorm/scripts/start-server.sh
+bash <skill-dir>/companion/scripts/start-server.sh
 
 # 持久会话（mockup 留在项目目录，便于事后回看）：
-bash skills/micropowers-brainstorm/scripts/start-server.sh --project-dir <项目路径>
+bash <skill-dir>/companion/scripts/start-server.sh --project-dir <项目路径>
 ```
 
 启动成功后脚本输出一行 JSON（同时写入 `state/server-info`）：
@@ -63,7 +63,7 @@ skill 应：
 
 ## 用户如何停止
 
-1. 运行 `bash skills/micropowers-brainstorm/scripts/stop-server.sh <session_dir>`
+1. 运行 `bash <skill-dir>/companion/scripts/stop-server.sh <session_dir>`
    （`session_dir` 即启动 JSON 里的 `state_dir` 去掉 `/state` 后缀）。
 2. 或不操作，服务器在 **4 小时无活动后自动退出**（可用 `--idle-timeout-minutes` 调整）。
 

@@ -1,9 +1,10 @@
----
-name: micropowers-brainstorm
-description: "Direct entry point for Socratic alignment.  Use /micropowers-brainstorm when you already know the task fits micropowers and want to skip the complexity analysis that /micropowers does.  Also invoked internally by /micropowers after routing.  You MUST use this before any creative work — aligns intent through Socratic dialogue before a single line of code is written."
----
+<!--
+Phase file — NOT a skill.
+Resolved relative to the micropowers skill directory: micropowers/phases/brainstorm.md
+Invoked by the entry skill (SKILL.md) only.
+-->
 
-# Brainstorming (Micro)
+# Phase 1 — Brainstorm
 
 Turn rough ideas into a clear, shared understanding through natural collaborative dialogue.
 
@@ -31,7 +32,7 @@ digraph brainstorm_micro {
     "Propose 2-3 approaches\n(lead with recommendation)" [shape=box];
     "Present design\n(section by section)" [shape=box];
     "User approves?" [shape=diamond];
-    "Invoke micropowers-plan" [shape=doublecircle];
+    "Read phases/plan.md\n(Phase 2)" [shape=doublecircle];
 
     "Explore project context" -> "Assess scope\n(large? → flag and decompose)";
     "Assess scope\n(large? → flag and decompose)" -> "Ask clarifying questions\n(ONE per message)";
@@ -42,11 +43,11 @@ digraph brainstorm_micro {
     "Propose 2-3 approaches\n(lead with recommendation)" -> "Present design\n(section by section)";
     "Present design\n(section by section)" -> "User approves?";
     "User approves?" -> "Present design\n(section by section)" [label="no, revise"];
-    "User approves?" -> "Invoke micropowers-plan" [label="yes"];
+    "User approves?" -> "Read phases/plan.md\n(Phase 2)" [label="yes"];
 }
 ```
 
-**The terminal state is invoking micropowers-plan.** Do NOT invoke micropowers-execute or any implementation skill directly.
+**The terminal state is reading `phases/plan.md` and continuing as Phase 2.** Do NOT read `phases/execute.md` or any implementation phase directly.
 
 ## Checklist
 
@@ -55,11 +56,11 @@ You MUST complete these items in order:
 1. **Explore project context** — check existing files, docs, recent commits, and conventions.  Know what you're building on top of.  Before touching source code, check the project's own rules (AGENTS.md / CLAUDE.md / README / CONTRIBUTING) for a declared code-index or search tool — if one is declared, use it for source exploration, not grep/find (see "Exploring with the Project's Code Index Tool" below).
 2. **Assess scope** — before asking detailed questions, judge the size.  If the request describes multiple independent subsystems (e.g. "build a platform with chat, file storage, and analytics"), flag this immediately: identify the pieces, their relationships, and which one to tackle first.  Do not waste questions refining details of a project that needs decomposition.
 3. **Ask clarifying questions** — ONE per message, no exceptions.  Understand purpose, constraints, and success criteria.  Prefer multiple-choice when possible, but open-ended is fine.  Cap at roughly 8 questions; stop earlier if the design is clear.
-3.5. **[可选] Offer the visual companion just-in-time** — NOT upfront.  The first time a clarifying question would genuinely be clearer shown than described (a mockup / layout / diagram / side-by-side comparison, not merely a UI topic), ask the user in its own message whether to open the visual companion.  On approval, follow `visual-companion.md`.  On decline, stay text-only and never raise it again unless they do.  Never offer it before the conversation reaches a visual question.
+3.5. **[可选] Offer the visual companion just-in-time** — NOT upfront.  The first time a clarifying question would genuinely be clearer shown than described (a mockup / layout / diagram / side-by-side comparison, not merely a UI topic), ask the user in its own message whether to open the visual companion.  On approval, follow `companion/visual-companion.md`.  On decline, stay text-only and never raise it again unless they do.  Never offer it before the conversation reaches a visual question.
 4. **Propose 2–3 approaches** — with trade-offs and your recommendation.  Lead with your recommended option and explain why.  The extra option(s) exist to surface a genuine alternative; a forced third is noise.
 5. **Present the design** — in sections, get approval after each section.  Cover: architecture, components, data flow, error handling, testing, and the performance/security constraints if the request touches them (see "Performance & Security Signals" below).  For simple features, one section is enough.  For features touching multiple files or introducing new concepts, break into parts and confirm each.
 6. **Get explicit approval** — the user must say yes before you proceed.
-7. **Invoke micropowers-plan** — transition to implementation planning.
+7. **Continue to Phase 2** — read `phases/plan.md` (resolved relative to the micropowers skill directory) and follow it. That file takes over from here.
 
 ## Exploring with the Project's Code Index Tool
 
@@ -96,7 +97,7 @@ When any apply, capture the constraint in the design (target, boundary, or "not 
 
 Before presenting anything to the user (questions, proposals, design sections), check the currently loaded style overlay.
 
-- If a style has been loaded (via the entry skill's `micropowers-styles/<name>.md` overlay), follow its micropowers-brainstorm rules.
+- If a style has been loaded (via the entry skill's `styles/<name>.md` overlay), follow its brainstorm rules.
 - If no style has been loaded, default to standard.
 
 The style overlay defines behavior in this phase. Quick reference:
@@ -127,13 +128,13 @@ An optional browser-based tool for showing mockups, diagrams, and visual option 
 **Offering the companion (just-in-time):** Do NOT offer it upfront.  Wait until a question would genuinely be clearer shown than told — a real mockup / layout / diagram question, not merely a UI topic.  The first time that happens, offer it then, as its own message:
 > "This next part might be clearer if I show you — I can put together mockups, diagrams, and side-by-side comparisons in a browser tab. It's optional and can be token-intensive. Want me to open it?"
 
-**This offer MUST be its own message.** Only the offer — no clarifying question, summary, or other content.  Wait for the user's response.  If they accept, follow `visual-companion.md` to start the server.  If they decline, continue text-only and don't offer again unless they raise it.
+**This offer MUST be its own message.** Only the offer — no clarifying question, summary, or other content.  Wait for the user's response.  If they accept, follow `companion/visual-companion.md` to start the server.  If they decline, continue text-only and don't offer again unless they raise it.
 
-**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal.  The test: would the user understand this better by seeing it than reading it?  A question about a UI topic is not automatically a visual question — "what kind of wizard do you want?" is conceptual (terminal); "which of these wizard layouts looks better?" is visual (browser).  See `visual-companion.md` for the full operating guide and the per-question decision table.
+**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal.  The test: would the user understand this better by seeing it than reading it?  A question about a UI topic is not automatically a visual question — "what kind of wizard do you want?" is conceptual (terminal); "which of these wizard layouts looks better?" is visual (browser).  See `companion/visual-companion.md` for the full operating guide and the per-question decision table.
 
 ## Design
 
-This is a standalone skill — it does not wrap or extend any other brainstorming
+This phase is self-contained — it does not wrap or extend any other brainstorming
 implementation.
 
 What's light: no spec file on disk, no always-on visual companion, no two-phase review gate.
@@ -147,7 +148,7 @@ What's NOT light: thinking depth, question quality, design rigor.
   companion is only offered just-in-time when a question would be clearer shown
   than told, and only after the user agrees.  No agreement, no companion; the
   tool complexity is never introduced unless the user opts in.  See
-  `visual-companion.md`.
+  `companion/visual-companion.md`.
 - **No question cap on complexity.**  ~8 questions is typical; go deeper if the
   feature demands it.  The cap is a soft guide, not a hard limit.
 

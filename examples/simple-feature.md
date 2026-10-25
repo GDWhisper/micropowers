@@ -8,9 +8,9 @@ A simple feature that shows micropowers' full flow.
 
 ## Step 2 — micropowers entry
 
-Micropowers assesses: this is "Normal" (not trivial, not complex).  Routes to micropowers-brainstorm.
+Micropowers assesses: this is "Normal" (not trivial, not complex).  Routes to Phase 1 by reading `phases/brainstorm.md`.
 
-## Step 3 — micropowers-brainstorm
+## Step 3 — Phase 1: Brainstorm
 
 Agent explores project context — reads current search component, checks conventions.
 
@@ -32,9 +32,9 @@ Agent has enough context.  Proposes:
 
 **User:** "好，用推荐方案。"
 
-Agent presents the design concisely in chat.  User approves.  Agent invokes micropowers-plan.
+Agent presents the design concisely in chat.  User approves.  Agent reads `phases/plan.md` and continues as Phase 2.
 
-## Step 4 — micropowers-plan
+## Step 4 — Phase 2: Plan
 
 Agent generates the plan.  Context is only 4 turns — short, good.  Task touches 3 files — borderline.
 
@@ -54,7 +54,7 @@ Agent presents:
 
 User picks B.
 
-## Step 5 — micropowers-execute
+## Step 5 — Phase 3: Execute
 
 Agent dispatches subagents:
 
@@ -64,9 +64,9 @@ Task 2: Filter logic hook     → subagent adds useFilters hook
 Task 3: Wire into SearchBar   → subagent integrates, runs full test suite
 ```
 
-Each task passes.  Agent runs final tests, presents diff, invokes micropowers-finish.
+Each task passes.  Agent runs final tests, presents diff, reads `phases/finish.md`.
 
-## Step 6 — micropowers-finish
+## Step 6 — Phase 4: Finish
 
 Agent shows: 3 files changed, 1 new, tests pass.  Recommends commit.  Done.
 

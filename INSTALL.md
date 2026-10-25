@@ -1,6 +1,6 @@
 # Install Micropowers
 
-Copy each skill into the agent's skills directory so `/micropowers` and `/micropowers-brainstorm` are available.
+Copy the single `micropowers` skill into the agent's skills directory so `/micropowers` is available.
 
 ## Manual copy (Pi, Claude Code, Cursor, ...)
 
@@ -9,20 +9,25 @@ SKILLS_DIR="${HOME}/.agents/skills"
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 mkdir -p "${SKILLS_DIR}"
-for skill in micropowers micropowers-brainstorm micropowers-plan micropowers-execute micropowers-finish; do
-    cp -r "${REPO_DIR}/skills/${skill}" "${SKILLS_DIR}/${skill}"
-done
+cp -r "${REPO_DIR}/skills/micropowers" "${SKILLS_DIR}/micropowers"
 ```
 
-> 注：`micropowers-styles/` 已作为子目录内嵌在 `micropowers/` 里，随 `micropowers` 一起复制，无需单独安装。
+> 注：整个工作流（四个阶段 + 四种风格 + 视觉伴侣）都是 `micropowers/` 目录内的子目录，随它一起复制，无需单独安装。
+>
+> **从旧版本升级时**，请先删掉旧的平级副本，否则它们会以独立 skill 的身份继续被加载：
+>
+> ```bash
+> rm -rf ~/.agents/skills/micropowers-brainstorm ~/.agents/skills/micropowers-plan \
+>        ~/.agents/skills/micropowers-execute ~/.agents/skills/micropowers-finish
+> ```
 
-`npx skills` 方式（推荐，一键安装整套）：
+`npx skills` 方式（推荐，一键安装）：
 
 ```bash
 npx skills add GDWhisper/micropowers -s '*'
 ```
 
-> `-s '*'` 一次安装全部 5 个 skill（micropowers / micropowers-brainstorm / micropowers-plan / micropowers-execute / micropowers-finish），跳过 skill 勾选；**安装到哪个 agent 保留交互选择**（或 `-a <agent>` 预设）。装到全局加 `-g`。
+> `-s '*'` 跳过 skill 勾选，直接安装全部（现在只有 `micropowers` 一个）；**安装到哪个 agent 保留交互选择**（或 `-a <agent>` 预设）。装到全局加 `-g`。
 
 ## Pi package
 
@@ -45,4 +50,4 @@ If you fetched this file from a URL (not a local clone), clone the repo first:
 git clone https://github.com/GDWhisper/micropowers /tmp/micropowers
 cd /tmp/micropowers
 ```
-then run the copy loop above.
+then run the copy command above.

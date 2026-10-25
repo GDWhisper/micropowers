@@ -24,7 +24,20 @@
 
 ### skill 内部的路径约定
 
-skill 引用同级资源（例如 `micropowers-styles/<name>.md`）必须写成**相对该 SKILL.md 自身目录**的路径，不能硬编码 `~/.agents/skills/...`：pi 包装完之后真实路径在 `~/.pi/agent/npm/node_modules/micropowers/skills/...` 之下，硬编码路径和从 cwd 出发的 `**/` Glob 都会失效。
+skill 引用同级资源（例如 `styles/<name>.md`、`phases/<name>.md`）必须写成**相对该 SKILL.md 自身目录**的路径，不能硬编码 `~/.agents/skills/...`：pi 包装完之后真实路径在 `~/.pi/agent/npm/node_modules/micropowers/skills/...` 之下，硬编码路径和从 cwd 出发的 `**/` Glob 都会失效。
+
+### 单入口结构：为什么阶段文件不能叫 SKILL.md
+
+整个工作流只暴露**一个** skill（`micropowers`）。四个阶段是 `phases/` 下的普通 `.md` 文件，不是独立 skill。
+
+**关键约束：嵌套文件绝对不能命名为 `SKILL.md`。** 两个平台的 skill 发现机制都会把任何层级的 `SKILL.md` 注册成独立 skill：
+
+- CodeBuddy（`codebuddy.js` 的 `scanSkillsDirectory`）递归遍历 skills 根目录，**只看文件名是否恰好是 `SKILL.md`**，不看嵌套深度（`MAX_SCAN_DEPTH=5`）。
+- pi（`dist/core/skills.js`）遇到含 `SKILL.md` 的目录即视为 skill root，不再往下递归。
+
+所以 `phases/plan/SKILL.md` 这种嵌套写法**挡不住**索引注册 —— 照样会占掉 4 个 skill 名额。用 `phases/plan.md` 这种普通文件名才真正只暴露 1 个 skill。
+
+阶段文件之间的切换不再用 skill 调用，而是**读文件**：入口 SKILL.md 负责路由，读到哪个阶段文件就以哪个阶段的身份继续。
 
 ## 仓库架构
 
@@ -35,13 +48,21 @@ micropowers/
 ├── hooks/
 │   └── session-start            # Claude Code / Cursor 用的注入钩子；pi 不用它（pi 自带 skill 索引）
 ├── skills/
-│   ├── micropowers/             # 入口：续档检测 + 风格选择 + 路由
-│   │   ├── SKILL.md
-│   │   └── micropowers-styles/  # 四种协作风格，按需单个加载
-│   ├── micropowers-brainstorm/  # Socratic 对齐（含可选的视觉伴侣 scripts/）
-│   ├── micropowers-plan/        # 精确 plan + 验收清单
-│   ├── micropowers-execute/     # 并行派发 + 执行纪律
-│   └── micropowers-finish/      # 收尾
+│   └── micropowers/             # 唯一暴露的 skill：入口路由 + 风格选择
+│       ├── SKILL.md             # 入口：续档检测 + 风格选择 + 路由到 phases/
+│       ├── phases/              # 四个阶段（普通 .md，不是 skill）
+│       │   ├── brainstorm.md    # Phase 1: Socratic 对齐
+│       │   ├── plan.md          # Phase 2: 精确 plan + 验收清单
+│       │   ├── execute.md       # Phase 3: 并行派发 + 执行纪律
+│       │   └── finish.md        # Phase 4: 收尾
+│       ├── styles/              # 四种协作风格，按需单个加载
+│       │   ├── fast.md
+│       │   ├── standard.md
+│       │   ├── explainable.md
+│       │   └── auditable.md
+│       └── companion/           # 可选视觉伴侣（浏览器）
+│           ├── visual-companion.md
+│           └── scripts/
 ├── agents.md                    # 本文件：开发文档
 ├── INSTALL.md                   # 安装指南（也供 agent 直接 fetch 执行）
 ├── LICENSE                      # Apache-2.0
@@ -82,7 +103,7 @@ npm publish --registry=https://registry.npmjs.org/
 **发布前自检：**
 
 ```bash
-npm pack --dry-run          # 确认 files 白名单没漏 skills/ 和 micropowers-styles/
+npm pack --dry-run          # 确认 files 白名单没漏 skills/（含 phases/ styles/ companion/）
 ```
 
 `package.json` 的 `files` 是白名单：新增顶层目录时必须同步加进去，否则 npm 包里没有它，而 git 安装方式却有 —— 两种渠道行为不一致是最难查的一类问题。
@@ -91,7 +112,7 @@ npm pack --dry-run          # 确认 files 白名单没漏 skills/ 和 micropowe
 
 ### Skill 开发
 
-每个 skill 是 `skills/<name>/SKILL.md`，frontmatter 必须有两个字段：
+仓库里只有一个 skill：`skills/micropowers/SKILL.md`，frontmatter 必须有两个字段：
 
 ```markdown
 ---
@@ -102,7 +123,9 @@ description: <触发时机导向的一句话，说明「什么时候该用我」
 
 `description` 是 agent 唯一的选取依据（它先看到全部 description，再决定读哪个 skill 正文），所以要写触发条件而不是功能罗列。
 
-正文按流程组织，现有 skill 的常用小节：`## The Process`、`## Step N — ...`、`## Style Adaptation`、`## Red Flags`。不强求统一模板，但同一件事在不同 skill 里的写法要一致。
+阶段文件（`phases/*.md`）**没有 frontmatter** —— 它们不是 skill，只在流程推进时被读到。
+
+正文按流程组织，现有 skill 的常用小节：`## The Process`、`## Step N — ...`、`## Style Adaptation`、`## Red Flags`。不强求统一模板，但同一件事在不同文件里的写法要一致。
 
 ### 提交信息格式
 
@@ -118,9 +141,9 @@ description: <触发时机导向的一句话，说明「什么时候该用我」
 
 1. **Plan 先行** — 复杂变更前先写 plan，经过审视再动手
 2. **自检闭环** — 修改后 review 自己的变更，确保无遗漏
-3. **改 skill 必须验证加载** — 动了 `skills/` 或 `package.json` 后，确认 pi 真的能加载：
+3. **改 skill 必须验证加载** — 动了 `skills/` 或 `package.json` 后，确认 pi 真的能加载，且**只加载了一个**：
    ```bash
-   cd /tmp && pi -e npm:micropowers -p "print the location of skill 'micropowers-plan'"
+   cd /tmp && pi -e npm:micropowers -p "print the location of skill 'micropowers'"
    ```
    本地未发布的改动改用本地路径包验证：`pi install <repo 绝对路径>`
 4. **最小变更** — 只做必要修改，不顺手重构无关代码

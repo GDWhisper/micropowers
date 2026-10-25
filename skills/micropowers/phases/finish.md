@@ -1,9 +1,10 @@
----
-name: micropowers-finish
-description: Use after micropowers-execute completes, or when resuming from a saved plan — wrap up the branch and decide next step.
----
+<!--
+Phase file — NOT a skill.
+Resolved relative to the micropowers skill directory: micropowers/phases/finish.md
+Invoked by Phase 3 (execute) only.
+-->
 
-# Finishing
+# Phase 4 — Finish
 
 Wrap up a completed feature branch.
 
@@ -37,10 +38,10 @@ Summary format varies by loaded style. If no style has been loaded, default to s
 | Explainable | Standard + key implementation decisions made |
 | Auditable | Standard + complete change log with decision point references |
 
-## When Called From micropowers-execute
+## When Called From Phase 3
 
-`micropowers-execute` runs micropowers-finish automatically after all tasks complete.  When micropowers-finish is invoked by micropowers-execute, steps 1-2 are already done — skip to step 3.
+Phase 3 (execute) runs Phase 4 automatically after all tasks complete.  When this file is entered from Phase 3, steps 1-2 are already done — skip to step 3.
 
-## When Called Standalone
+## When Resumed From a Saved Plan
 
-User starts a new session, types `/micropowers`, and micropowers detects a saved plan.  After micropowers-execute replays the remaining tasks, micropowers-finish is called to wrap up.
+User starts a new session, types `/micropowers`, and the entry skill detects a saved plan.  After Phase 3 replays the remaining tasks, Phase 4 is entered to wrap up.

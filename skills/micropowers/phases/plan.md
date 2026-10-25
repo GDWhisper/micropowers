@@ -1,13 +1,14 @@
----
-name: micropowers-plan
-description: Use after micropowers-brainstorm confirms the design — generate an implementation plan with the option to archive for later or continue immediately.
----
+<!--
+Phase file — NOT a skill.
+Resolved relative to the micropowers skill directory: micropowers/phases/plan.md
+Invoked by Phase 1 (brainstorm) only.
+-->
 
-# Make A Plan
+# Phase 2 — Plan
 
 Turn the aligned design from brainstorming into a task list.  Before rushing to execution, let the user decide: archive the plan for later, or continue right now.
 
-**Announce:** Announce what you're doing in the user's language (e.g. "用 micropowers-plan 把设计转成实施计划").
+**Announce:** Announce what you're doing in the user's language (e.g. "用 micropowers 把设计转成实施计划").
 
 ## Step 1 — Generate The Plan
 
@@ -69,7 +70,7 @@ A task should take 10–20 minutes for a competent developer.  Not 2 minutes (to
 
 **Tech Stack:** [language, framework, key deps]
 
-**Plan saved via:** micropowers/micropowers-plan
+**Plan saved via:** micropowers/plan
 
 ---
 
@@ -138,10 +139,10 @@ A. 保存到磁盘 (推荐)
    → 续档: 新开会话，输入 /micropowers 或 /micropowers <路径>
 
 B. 本会话直接执行
-   → 用 subagent 集群作业（micropowers-execute）并行执行所有 task
+   → 用 subagent 集群作业并行执行所有 task
    → Plan 不落盘，保留在对话中
 
-选 A 还是 B？（选 A 下次续档也会走到 micropowers-execute 执行）
+选 A 还是 B？（选 A 下次续档也会走到执行阶段）
 ```
 
 ## Step 4 — Route Based on Choice
@@ -154,16 +155,16 @@ B. 本会话直接执行
 4. **Ask the user:**
 
 ```
-Plan 已保存。要现在用 micropowers-execute 集群作业执行，还是下次？
+Plan 已保存。要现在用集群作业执行，还是下次？
 
 A. 现在执行 → 立即在本会话中派 subagent 并行作业
 B. 下次 → 新开会话，输入 /micropowers 或 /micropowers .dev_docs/micropowers/plans/<file>
 ```
 
-5. If A → invoke `micropowers-execute` to execute
+5. If A → read `phases/execute.md` and continue as Phase 3
 6. If B → output the resume command and stop.  Do NOT wait for a reply — the user may switch sessions immediately.
 
 ### If B (Continue)
 
 1. Do NOT write the plan to disk — it lives in the conversation
-2. Invoke `micropowers-execute` to execute (subagent 集群并行作业).  The choice of B IS the confirmation — do NOT ask "ready?" / "确认开始执行？" afterwards.
+2. Read `phases/execute.md` and continue as Phase 3 (subagent 集群并行作业).  The choice of B IS the confirmation — do NOT ask "ready?" / "确认开始执行？" afterwards.

@@ -1,19 +1,20 @@
----
-name: micropowers-execute
-description: Use after micropowers-plan — dispatch subagents in parallel for independent tasks, serial for dependent ones.  Fresh context per subagent, lightweight verification, auto-micropowers-finish.
----
+<!--
+Phase file — NOT a skill.
+Resolved relative to the micropowers skill directory: micropowers/phases/execute.md
+Invoked by Phase 2 (plan), or by the entry skill when resuming a saved plan.
+-->
 
-# Cluster Work
+# Phase 3 — Execute
 
 Execute the plan by dispatching subagents.  Independent tasks run in parallel
 like a job cluster — serial only where one task produces files another consumes.
 
-**Announce:** Announce what you're doing in the user's language (e.g. "用 micropowers-execute 并行执行计划").
+**Announce:** Announce what you're doing in the user's language (e.g. "用 micropowers 并行执行计划").
 
 ## When to Use
 
-- After `micropowers-plan` when user chose "Continue here" (option B)
-- After `micropowers` detects a saved plan and user says "continue"
+- After Phase 2 (plan) when user chose "Continue here" (option B)
+- After the entry skill detects a saved plan and user says "continue"
 
 ## The Process
 
@@ -29,7 +30,7 @@ digraph cluster_work {
     "Group: dependent tasks\n→ dispatch serially" [shape=box];
     "All tasks done?" [shape=diamond];
     "Final review" [shape=box];
-    "Invoke micropowers-finish" [shape=doublecircle];
+    "Read phases/finish.md\n(Phase 4)" [shape=doublecircle];
 
     "Read plan, extract all tasks" -> "Detect dependencies\nbetween tasks";
     "Detect dependencies\nbetween tasks" -> "Group: independent tasks\n→ dispatch in parallel";
@@ -40,7 +41,7 @@ digraph cluster_work {
     "Group: dependent tasks\n→ dispatch serially" -> "All tasks done?";
     "All tasks done?" -> "Group: dependent tasks\n→ dispatch serially" [label="no"];
     "All tasks done?" -> "Final review" [label="yes"];
-    "Final review" -> "Invoke micropowers-finish";
+    "Final review" -> "Read phases/finish.md\n(Phase 4)";
 }
 ```
 
@@ -145,7 +146,7 @@ After all tasks pass:
    - Debug artifacts (console.log, print, TODO, FIXME)
    - Duplicated logic across tasks (two subagents solving the same problem)
    - Design-committed performance/security constraints: spot-check that tasks honored any constraints the brainstorm design declared
-3. **If clean** → invoke `micropowers-finish`.
+3. **If clean** → read `phases/finish.md` and continue as Phase 4.
    **If issues** → fix the most impactful one, re-run tests, re-check.
 
 ## Design

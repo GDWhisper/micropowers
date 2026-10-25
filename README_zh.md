@@ -19,13 +19,15 @@
 
 ```
 用户 /micropowers → 入口路由 + 风格选择
-                → micropowers-brainstorm（Socratic 对齐）
-                → micropowers-plan（精确规格 + 验收清单）
-                → micropowers-execute（并行 subagent + TDD 纪律）
-                → micropowers-finish（收尾）
+                → Phase 1 Brainstorm（Socratic 对齐）
+                → Phase 2 Plan（精确规格 + 验收清单）
+                → Phase 3 Execute（并行 subagent + TDD 纪律）
+                → Phase 4 Finish（收尾）
 ```
 
 四个阶段不可跳过——用户打 `/micropowers` 就是签了这份契约；唯一例外是续档：saved plan 直接从执行阶段恢复。极简任务的设计呈现可压缩到一句话，但流程不可跳过。
+
+**只有一个入口。** 四个阶段是 `skills/micropowers/phases/` 下的普通文件，不是独立 skill —— 用户只看到一个 `/micropowers`，AI 的 skill 索引里也只有这一条，注意力开销最小。
 
 ## 四种协作风格
 
@@ -38,7 +40,7 @@
 | **可解释型** | 想理解思路 | 附取舍逻辑 | +设计理由 | +根因分析 |
 | **可审计型** | 决策留痕 | 追问到底 + 决策编号 | +决策链接 | 逐条 Verify |
 
-风格文件独立（`skills/micropowers/micropowers-styles/`），不污染核心流程 skill。入口只按需读取所选风格，不一次性加载全部。Plan 内部执行规格四种风格完全相同，风格只影响出稿后给用户呈现什么。
+风格文件独立（`skills/micropowers/styles/`），不污染核心流程。入口只按需读取所选风格，不一次性加载全部。Plan 内部执行规格四种风格完全相同，风格只影响出稿后给用户呈现什么。
 
 ## 模型权限
 
@@ -58,13 +60,13 @@
 
 ## 安装
 
-**推荐：`npx skills` 一键安装整套（5 个 skill 是一个整体，建议全部安装）**
+**推荐：`npx skills` 一键安装**
 
 ```bash
 npx skills add GDWhisper/micropowers -s '*'
 ```
 
-> `-s '*'` 跳过 skill 勾选，一次安装全部 5 个 skill（micropowers / micropowers-brainstorm / micropowers-plan / micropowers-execute / micropowers-finish）。不加 `-s` 会进入交互勾选界面，需要逐个空格选择。
+> `-s '*'` 跳过 skill 勾选，直接安装（现在只有 `micropowers` 一个 skill）。不加 `-s` 会进入交互勾选界面。
 > **安装到哪个 agent 保留交互选择**（`-a <agent>` 可预设，支持的 agent 见 `npx skills add --help`）；默认装到当前项目，加 `-g` 装到全局。
 
 **告诉你的 agent：**
@@ -74,8 +76,10 @@ npx skills add GDWhisper/micropowers -s '*'
 或手动：
 
 ```bash
-cp -r micropowers/skills/* ~/.agents/skills/
+cp -r micropowers/skills/micropowers ~/.agents/skills/
 ```
+
+> **从旧版本升级**：先删掉旧的平级副本（`micropowers-brainstorm` / `micropowers-plan` / `micropowers-execute` / `micropowers-finish`），否则它们会继续以独立 skill 的身份被加载。详见 [INSTALL.md](INSTALL.md)。
 
 Pi 包安装：
 

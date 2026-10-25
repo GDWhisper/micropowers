@@ -1,6 +1,6 @@
 # 视觉伴侣使用指南（Visual Companion）
 
-micropowers-brainstorm 的可选浏览器工具。在用户同意的前提下启用，用于展示 mockup、图表和视觉选项对比。**它不是默认模式，是一个工具**——只在"看比读更易懂"时才拿出来用。
+micropowers Brainstorm 阶段的可选浏览器工具。在用户同意的前提下启用，用于展示 mockup、图表和视觉选项对比。**它不是默认模式，是一个工具**——只在"看比读更易懂"时才拿出来用。
 
 ---
 
@@ -45,10 +45,10 @@ micropowers-brainstorm 的可选浏览器工具。在用户同意的前提下启
 
 ## 3. 如何启动（just-in-time）
 
-**只在用户同意后才启动。** 启动命令：
+**只在用户同意后才启动。** 启动命令（脚本路径相对 micropowers skill 目录解析，即 `<skill-dir>/companion/scripts/start-server.sh`；执行前先把它解析成绝对路径）：
 
 ```bash
-bash skills/micropowers-brainstorm/scripts/start-server.sh --project-dir /path/to/project --open
+bash <skill-dir>/companion/scripts/start-server.sh --project-dir /path/to/project --open
 ```
 
 - `--open`：首屏就绪时自动开浏览器。**仅当用户同意时才用**——脚本内部靠 `BRAINSTORM_OPEN` 开关，没它不会自动开。
@@ -78,7 +78,7 @@ bash skills/micropowers-brainstorm/scripts/start-server.sh --project-dir /path/t
 **停止服务器**：
 
 ```bash
-bash skills/micropowers-brainstorm/scripts/stop-server.sh <session_dir>
+bash <skill-dir>/companion/scripts/stop-server.sh <session_dir>
 ```
 
 注意这里传的是 **session 目录**（即 `screen_dir` / `state_dir` 的父目录，`.micropowers/brainstorm/<session-id>`），不是 `state_dir`。脚本会校验 PID 确为本会话服务器后再终止；只有 `/tmp` 下的会话目录会物理删除，`.micropowers/` 下的保留供回看。
