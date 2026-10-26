@@ -1,14 +1,23 @@
 # Micropowers — 开发文档
 
-## 当前状态（2026-08-10）
+## 当前状态（2026-10-25）
 
 | 项目 | 状态 |
 |------|------|
-| 版本 | `0.1.0`（版本号唯一来源：`package.json`） |
-| npm | 已发布 [`micropowers`](https://www.npmjs.com/package/micropowers)@0.1.0 |
-| git tag | `v0.1.0`（= `main` 的 `5a18558`） |
+| 版本 | `0.2.0`（版本号唯一来源：`package.json`） |
+| npm | 已发布 [`micropowers`](https://www.npmjs.com/package/micropowers)@0.1.0；`0.2.0` 已打包待发布 |
+| git tag | `v0.2.0`（= `main` 的 `b3a70a0`，本地已打，**未推送**） |
 | pi 生态 | 正式 pi package —— `package.json` 里有 `pi.skills` manifest + `pi-package` keyword |
-| 分支 | 只有 `main`（已推送远端）；早期的 `dev` / `test` 遗留分支已删除 |
+| 分支 | 只有 `main`；早期的 `dev` / `test` 遗留分支已删除 |
+
+### 0.2.0 的破坏性变更
+
+五个平级 skill 折叠成一个（见下文「单入口结构」），旧的四个 slash command 全部移除。**升级用户必须手动删除平级副本**，否则它们会继续以独立 skill 的身份被加载：
+
+```bash
+rm -rf ~/.agents/skills/micropowers-brainstorm ~/.agents/skills/micropowers-plan \
+       ~/.agents/skills/micropowers-execute ~/.agents/skills/micropowers-finish
+```
 
 ### 分发形态
 
@@ -87,8 +96,11 @@ micropowers/
 # 1. 改动 → 提交（当前直接在 main）
 git add -A && git commit -m "<type>: <描述>"
 
-# 2. 升版本（会自动创建 vX.Y.Z tag 并提交 package.json）
-npm version patch          # 或 minor / major
+# 2. 升版本
+npm version patch --no-git-tag-version   # 或 minor / major；只改 package.json
+#    然后手动提交 + 打 tag（这样 tag 能精确指向发布 commit）
+git add package.json && git commit -m "chore(release): <版本> — <摘要>"
+git tag -a vX.Y.Z -F <msg-file>
 
 # 3. 推送代码 + tag
 git push origin main --follow-tags
@@ -96,6 +108,8 @@ git push origin main --follow-tags
 # 4. 发 npm（必须显式指定官方源，见下方陷阱）
 npm publish --registry=https://registry.npmjs.org/
 ```
+
+**为什么不用 `npm version minor` 的自动 tag：** 它会把 tag 打在「版本号变更 commit」上，而发布说明需要写进 commit message —— 分成两步才能让 tag 和发布提交内容对齐。
 
 **陷阱：本机 `~/.npmrc` 把默认 registry 指向了 `registry.npmmirror.com`（只读镜像）。**
 后果是 `npm whoami` / `npm view` 会报 need auth 或返回过期数据 —— 任何需要鉴权或需要准确结果的命令都要加 `--registry=https://registry.npmjs.org/`。`package.json` 的 `publishConfig.registry` 已经把 publish 钉在官方源，但显式加参数更保险。
