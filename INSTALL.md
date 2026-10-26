@@ -37,7 +37,7 @@ Pi 用户可以不复制文件，直接装成 pi 包（skills 由 pi 自己加�
 pi install npm:micropowers
 ```
 
-> 也可以钉住 git tag：`pi install git:github.com/GDWhisper/micropowers@v0.1.0`。加 `-l` 写入当前项目的 `.pi/settings.json`，默认写入用户级 settings。
+> 也可以钉住 git tag：`pi install git:github.com/GDWhisper/micropowers@v0.2.0`。加 `-l` 写入当前项目的 `.pi/settings.json`，默认写入用户级 settings。
 > **不要和上面的复制方式同时用。** pi 里同名 skill 先到先得，且自动发现目录优先于包 —— `~/.agents/skills/micropowers*` 或 `~/.pi/agent/skills/micropowers*` 下的残留副本会静默屏蔽包里的 skill。切换到 pi 包之前先删掉它们：
 >
 > ```bash
